@@ -54,7 +54,15 @@ Para começar, vamos a um exemplo prático. Suponha que você quer criar uma fun
 
 <br>
 
-![equalNumbers](./assets/equalNumbers.png)
+```typescript
+function checkEqualNumbers(num1: number, num2: number): string {
+  if (num1 !== num2) return `${num1} is not equal to ${num2}`;
+  return `${num1} is equal to ${num2}`;
+}
+
+console.log(checkEqualNumbers(1, 2)); /** 1 is not equal to 1 */
+console.log(checkEqualNumbers(1, 1)); /** 1 is equal to 1 */
+```
 
 <br>
 
@@ -62,7 +70,15 @@ Agora, imagine que você precise criar uma função que verifique se duas string
 
 <br>
 
-![equalStrings](./assets/equalStrings.png)
+```typescript
+function checkEqualStrings(str1: string, str2: string): string {
+  if (str1 !== str2) return `${str1} is not equal to ${str2}`;
+  return `${str1} is equal to ${str2}`;
+}
+
+console.log(checkEqualStrings('a', 'b')); /** a is not equal to a */
+console.log(checkEqualStrings('a', 'a')); /** a is equal to a */
+```
 
 <br>
 
@@ -72,7 +88,15 @@ Você já deve ter reparado que estamos repetindo código, não é mesmo? Então
 
 <br>
 
-![checkEquality](./assets/checkEquality.png)
+```typescript
+function checkEquality<T>(param1: T, param2: T): string {
+  if (param1 !== param2) return `${param1} is not equal to ${param2}`;
+  return `${param1} is equal to ${param2}`;
+}
+
+console.log(checkEquality<number>(1, 1)); /** 1 is equal to 1 */
+console.log(checkEquality<string>('a', 'a')); /** a is equal to a */
+```
 
 Dessa forma podemos receber parâmetros de diversos tipos sem que a função apresente nenhum erro e continue nos trazendo o retorno esperado. Legal, não é mesmo?
 

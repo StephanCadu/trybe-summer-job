@@ -232,9 +232,9 @@ instance2.setKeyValue('value', 2); /** gera erro */
 ```
 <br>
 
-Aqui estamos criando uma classe chamada `KeyValuePair` que recebe em seu construtor os parâmetros `key` e `value`, de tipos genéricos. Além disso possui os métodos *getKey* e *getValue* para recupera os valores privados, e o método *setKeyValue*, que altera ambos os valores de uma vez.
+Aqui estamos criando uma classe chamada `KeyValuePair` que recebe em seu construtor os parâmetros `key` e `value`, de tipos genéricos. Além disso possui os métodos *getKey* e *getValue* para recuperar os valores privados, e o método *setKeyValue*, que altera ambos os valores de uma vez.
 
-Nesse exemplo podemos ver que, ao tentar chamar o método *setKeyValue* da instância `instance2`, o *TypeScript* gera um erro dizendo que o tipo `string` não pode ser assinalado ao tipo `number`.
+Nesse exemplo, podemos ver que ao tentar chamar o método *setKeyValue* da instância `instance2`, o *TypeScript* gera um erro dizendo que o tipo `string` não pode ser assinalado ao tipo `number`.
 
 Isso acontece porque quando criamos a instância `instance2`, definimos que o tipo do primeiro parâmetro é `number` e o tipo do segundo parâmetro é `string`. Uma vez definidos os tipos, não podemos mais alterá-los.
 

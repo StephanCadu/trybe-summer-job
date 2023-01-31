@@ -1,16 +1,21 @@
-# Generics em TypeScript - Aplicações práticas
+# Aplicações na prática de tipos genéricos em TypeScript
 
 Esse conteúdo foi criado para a segunda etapa do processo seletivo de Summer Job de Currículo na [Trybe](https://www.betrybe.com/).
 
 <br>
 
-# O que vamos aprender? 
+## O que vamos aprender? 
 
 Hoje iremos aprender sobre **Generics**, uma funcionalidade fundamental do **TypeScript** e também de outras linguagens fortemente tipadas como **C#** e **Java**. Você verá como ele funciona na prática, e esse conhecimento será essencial para tornar seu código mais *flexível* e *reutilizável*. Vamos lá? 🚀
 
 <br>
 
-# Você será capaz de:
+---
+
+<br>
+
+
+## Você será capaz de:
 
 * Compreender o que são **Generics**
 * Utilizar Generics em funções
@@ -20,7 +25,14 @@ Hoje iremos aprender sobre **Generics**, uma funcionalidade fundamental do **Typ
 
 <br>
 
-# Por que isso é importante?
+---
+
+<br>
+
+## Por que isso é importante?
+
+<br>
+
 
 Sabemos que o **TypeScript** veio para solucionar problemas que o **JavaScript** por si só não consegue, sendo o principal deles, a tipagem de elementos. Saber os tipos das variáveis com que estamos trabalhando é um passo essencial para tornarmos nosso código mais robusto, confiável e menos propenso a erros.
 
@@ -42,16 +54,6 @@ Para começar, vamos a um exemplo prático. Suponha que você quer criar uma fun
 
 <br>
 
-<!-- ```typescript
-function checkEqualNumbers(num1: number, num2: number): string {
-  if (num1 !== num2) return `${num1} is not equal to ${num2}`;
-  return `${num1} is equal to ${num2}`;
-}
-
-console.log(checkEqualNumbers(1, 2)); /** 1 is not equal to 2 */
-console.log(checkEqualNumbers(1, 1)); /** 1 is equal to 1 */
-``` -->
-
 ![equalNumbers](./assets/equalNumbers.png)
 
 <br>
@@ -59,16 +61,6 @@ console.log(checkEqualNumbers(1, 1)); /** 1 is equal to 1 */
 Agora, imagine que você precise criar uma função que verifique se duas strings são iguais. Isso poderia ser feito assim:
 
 <br>
-
-<!-- ```typescript
-function checkEqualStrings(str1: string, str2: string): string {
-  if (str1 !== str2) return `${str1} is not equal to ${str2}`;
-  return `${str1} is equal to ${str2}`;
-}
-
-console.log(checkEqualStrings('a', 'b')); /** a is not equal to b */
-console.log(checkEqualStrings('a', 'a')); /** a is equal to a */
-``` -->
 
 ![equalStrings](./assets/equalStrings.png)
 
@@ -79,17 +71,6 @@ Você já deve ter reparado que estamos repetindo código, não é mesmo? Então
 É aqui que entram os `Generics`, veja como ficaria a nossa função de verificação genérica:
 
 <br>
-
-<!-- ```typescript
-function checkEquality<T>(param1: T, param2: T): string {
-  if (param1 !== param2) return `${param1} is not equal to ${param2}`;
-  return `${param1} is equal to ${param2}`;
-}
-
-console.log(checkEquality<number>(1, 1)); /** 1 is equal to 1 */
-console.log(checkEquality<string>('a', 'a')); /** a is equal to a */
-console.log(checkEquality<boolean>(true, false)); /** true is not equal to false */
-``` -->
 
 ![checkEquality](./assets/checkEquality.png)
 
@@ -135,10 +116,10 @@ function compareTypes<T, U>(param1: T, param2: U): boolean {
   return typeof param1 === typeof param2
 }
 
-console.log(compareTypes<number, string>(1, 'a'));
+console.log(compareTypes<boolean, string>(false, 'a'));
 /** imprime false */
 
-console.log(compareTypes<boolean, boolean>(true, false));
+console.log(compareTypes<number, number>(1, 2));
 /** imprime true */
 ```
 
@@ -151,7 +132,7 @@ console.log(compareTypes<boolean, boolean>(true, false));
 
   ### Escreva uma função chamada *mergeObjects* que deve receber dois objetos de tipos genéricos e retornar a junção deles.
 
-  - Dica: lembre-se da funcionalidade `Object.assign`
+  - Dica: lembre-se do [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
 </details>
 
 <br>
@@ -221,20 +202,21 @@ class KeyValuePair<K = string, V = number> {
   public getValue() { return this.value; }
 }
 
-const instance1 = new KeyValuePair('id', 2);
+const instance1 = new KeyValuePair<string, number>('id', 2);
 instance1.setKeyValue('ID', 22);
 
 console.log(instance1.getKey());
 /** imprime 'ID' */
 
-const instance2 = new KeyValuePair(2, 'value');
-instance2.setKeyValue('value', 2); /** gera erro */
+const instance2 = new KeyValuePair<number, string>(2, 'value');
+instance2.setKeyValue('value', 2);
+/** Error: Argument of type 'string' is not assignable to parameter of type 'number'. */
 ```
 <br>
 
-Aqui estamos criando uma classe chamada `KeyValuePair` que recebe em seu construtor os parâmetros `key` e `value`, de tipos genéricos. Além disso possui os métodos *getKey* e *getValue* para recupera os valores privados, e o método *setKeyValue*, que altera ambos os valores de uma vez.
+Aqui estamos criando uma classe chamada `KeyValuePair` que recebe em seu construtor os parâmetros `key` e `value`, de tipos genéricos. Além disso possui os métodos *getKey* e *getValue* para recuperar os valores privados, e o método *setKeyValue*, que altera ambos os valores de uma vez.
 
-Nesse exemplo podemos ver que, ao tentar chamar o método *setKeyValue* da instância `instance2`, o *TypeScript* gera um erro dizendo que o tipo `string` não pode ser assinalado ao tipo `number`.
+Nesse exemplo, podemos ver que ao tentar chamar o método *setKeyValue* da instância `instance2`, o *TypeScript* gera um erro dizendo que o tipo `string` não pode ser assinalado ao tipo `number`.
 
 Isso acontece porque quando criamos a instância `instance2`, definimos que o tipo do primeiro parâmetro é `number` e o tipo do segundo parâmetro é `string`. Uma vez definidos os tipos, não podemos mais alterá-los.
 

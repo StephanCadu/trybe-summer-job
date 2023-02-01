@@ -268,13 +268,15 @@
   ): any {
     const hasAccumulator = accumulator !== undefined;
     const firstIndex = hasAccumulator ? 0 : 1;
-    let firstAccumulator = hasAccumulator ? accumulator : array[0];
+    const firstAccumulator = hasAccumulator ? accumulator : array[0];
+
+    let result;
 
     for (let i = firstIndex; i < array.length; i += 1) {
-      firstAccumulator = callback(firstAccumulator, array[i], i, array);
+      result = callback(firstAccumulator, array[i], i, array);
     }
 
-    return accumulator;
+    return result;
   }
 
   console.log(

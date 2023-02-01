@@ -99,7 +99,7 @@
 
   <br>
 
-  ## Exercício 3
+  ## Exercício 2
 
   ### Recrie a função find do JavaScript.
 
@@ -141,7 +141,13 @@
 
   <br>
 
-  ## Exercício 4
+  ## Exercício 3
+
+  ### Crie uma interface IPokemon com as seguintes características:
+  - um atributo `name` que deve ser do tipo string
+  - um atributo `id` que deve ser do tipo number
+  - um atributo `evolutions` que deve ser de um tipo genérico
+  - um atributo `type` que deve ser de um tipo genérico
 
   ## Solução:
 
@@ -156,7 +162,20 @@
 
   <br>
 
-  ## Exercício 5
+  ## Exercício 4
+
+  ### Crie uma classe Pokemon que implemente a interface IPokemon. Além disso, crie duas instâncias da classe pokemon com as seguintes características:
+  - primeira instância:
+    - o atributo `name` deve ser `bulbasaur`
+    - o atributo `id` deve ser `1`
+    - o atributo `evolutions` deve ser o array `['ivysaur', 'venusaur']`
+    - o atributo `type` deve ser o array `['grass', 'poison']`
+  
+  - segunda instância:
+    - o atributo `name` deve ser `pikachu`
+    - o atributo `id` deve ser `25`
+    - o atributo `evolutions` deve ser a string `raichu`
+    - o atributo `type` deve ser a string `electric`
 
   ## Solução:
 
@@ -174,12 +193,12 @@
   const pikachu = new Pokemon('pikachu', 25, 'raichu', 'electric');
 
   console.log(pikachu.type); // imprime 'electric'
-  console.log(bulbasaur.type); // imprime ['ivysaur', 'venusaur']
+  console.log(bulbasaur.type); // imprime ['grass', 'poison']
   ```
 
   <br>
 
-  ## Exercício 6
+  ## Exercício 5
 
   ### Recrie a função map do JavaScript.
 
@@ -217,7 +236,7 @@
   ```
   <br>
 
-  ## Exercício 7
+  ## Exercício 6
 
   ### Recrie a função reduce do JavaScript.
 

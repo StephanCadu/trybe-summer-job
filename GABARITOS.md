@@ -254,11 +254,24 @@
   ## Solução:
 
   ```typescript
-  type ReduceCallback<T> = (accumulator: any, element: T, index?: number, array?: T[]) => any;
+  type ReduceCallback<T> = (
+    accumulator: any,
+    element: T,
+    index?: number,
+    array?: T[],
+  ) => any;
 
-  function myReduce<T>(array: T[], callback: ReduceCallback<T>, accumulator: any): any {
-    for(let i = 0; i < array.length; i += 1) {
-      accumulator = callback(accumulator, array[i], i, array)
+  function myReduce<T>(
+    array: T[],
+    callback: ReduceCallback<T>,
+    accumulator: any,
+  ): any {
+    const hasAccumulator = accumulator !== undefined;
+    const firstIndex = hasAccumulator ? 0 : 1;
+    let firstAccumulator = hasAccumulator ? accumulator : array[0];
+
+    for (let i = firstIndex; i < array.length; i += 1) {
+      firstAccumulator = callback(firstAccumulator, array[i], i, array);
     }
 
     return accumulator;
@@ -267,9 +280,9 @@
   console.log(
     myReduce<number>(
       [1, 2, 3, 4],
-      (acc, element, index, array) => acc + element,
-      0
-    )
+      (acc, element, _index, _array) => acc + element,
+      0,
+    ),
   );
   // retorna 10
   ```

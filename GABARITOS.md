@@ -99,15 +99,6 @@
 
   <br>
 
-  ## Exercício 2
-
-  ## Solução:
-
-  ```typescript
-  ```
-
-  <br>
-
   ## Exercício 3
 
   ### Recrie a função find do JavaScript.

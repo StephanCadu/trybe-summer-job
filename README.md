@@ -22,6 +22,7 @@ Hoje iremos aprender sobre **Generics**, uma funcionalidade fundamental do **Typ
 * Utilizar Generics em interfaces
 * Utilizar Generics em classes
 * Criar funções que recebam múltiplos parâmetros genéricos
+* Limitar e dar valores padrão para tipos genéricos
 
 <br>
 
@@ -36,7 +37,7 @@ Hoje iremos aprender sobre **Generics**, uma funcionalidade fundamental do **Typ
 
 Sabemos que o **TypeScript** veio para solucionar problemas que o **JavaScript** por si só não consegue, sendo o principal deles, a tipagem de elementos. Saber os tipos das variáveis com que estamos trabalhando é um passo essencial para tornarmos nosso código mais robusto, confiável e menos propenso a erros.
 
-Porém, em alguns casos, a tipagem pode ser trabalhosa. Não seria legal ter que criar uma função para trabalhar com cada tipo primitivo, concorda? Por isso devemos buscar práticas que deixem nosso código mais dinâmico e reutilizável.
+Porém, em alguns casos, a tipagem pode ser trabalhosa. Seria trabalhoso ter que criar uma função para lidar com cada tipo primitivo, concorda? Por isso devemos buscar práticas que deixem nosso código mais dinâmico e reutilizável.
 
 Os **Generics** são uma funcionalidade que nos permite unir esses conceitos, de forma a criar funções, classes e interfaces que possam receber um ou mais parâmetros de tipos distintos.
 
@@ -149,27 +150,6 @@ console.log(compareTypes<number, number>(1, 2));
 
 <br>
 
-Também é possível dar um valor padrão para os tipos genéricos ou limitá-los fazendo com que eles estendam de outros tipos:
-
-```typescript
-function sayHello<T extends string | number, U = boolean>(
-  name: T,
-  isAdmin: U,
-) {
-  if (isAdmin) {
-    console.log(`Wellcome back, ${name}`);
-  } else {
-    console.log(`Hello, ${name}`)
-  }
-}
-
-sayHello('John', true);
-// imprime 'Wellcome back, John'
-
-sayHello(30, false);
-// imprime 'Hello, 30'
-```
-
 <details>
   <summary>📌 Fixação 1</summary>
 
@@ -212,7 +192,7 @@ Dessa forma, o atributo `data` receberá um array de qualquer tipo que seja pass
 
   ### Escreva uma interface chamada *IPerson* com três atributos:
   1. `name` que deve ser do tipo string
-  2. `id` que deve ser de um tipo genérico que extenda os tipos string e number
+  2. `id` que deve ser de um tipo genérico que estenda os tipos string e number
   3. `compareId` que recebe um parâmetro do mesmo tipo passado ao atributo `id` e retorna um booleano
 
   ⚠️ Essa interface será usada no próximo exercício de fixação. Certifique-se de realizar esse exercício antes de prosseguir.
@@ -255,11 +235,22 @@ const instance1 = new KeyValuePair<string, number>('id', 2);
 instance1.setKeyValue('ID', 22);
 
 console.log(instance1.getKey());
-/** imprime 'ID' */
+// imprime 'ID'
+
+console.log(instance1.getValue());
+// imprime 22
 
 const instance2 = new KeyValuePair<number, string>(2, 'value');
 instance2.setKeyValue('value', 2);
 /** Error: Argument of type 'string' is not assignable to parameter of type 'number'. */
+
+instance2.setKeyValue(3, 'newValue');
+
+console.log(instance2.getKey());
+// imprime 3
+
+console.log(instance2.getValue());
+// imprime 'newValue'
 ```
 <br>
 
@@ -280,7 +271,7 @@ Esse comportamento do *TypeScript* nos ajuda a manter a coesão no nosso código
 
  ### Crie uma classe chamada *Person* que implemente a interface *IPerson* criada no exercício de fixação anterior, ela deve possuir as seguintes características:
   1. um atributo `name` que deve ser do tipo string
-  2. um atributo `id` que deve ser de um tipo genérico que extenda os tipos string e number
+  2. um atributo `id` que deve ser de um tipo genérico que estenda os tipos string e number
   3. um método `compareId` que recebe um parâmetro do mesmo tipo passado ao atributo `id` e retorna um booleano
 
   ### Além disso, crie uma instância da classe *Person* e teste o método `compareId` passando um `id` igual e um diferente do `id` definido no construtor.
@@ -289,6 +280,79 @@ Esse comportamento do *TypeScript* nos ajuda a manter a coesão no nosso código
 </details>
 
 <br>
+
+## Extends e Default Types em Generics
+
+O TypeScript também disponibiliza meios de limitar seus tipos genéricos. Antes de irmos ao código, imagine que você possui uma base de dados com clientes (representados por objetos), onde cada cliente possui um id único que pode ser tanto uma string quanto um número. Agora, e se alguém tentasse inserir um novo cliente com um id sendo do tipo booleano 😱. Isso com certeza daria um erro, não é? Para resolver esse problema, limitar seu tipo genérico seria a solução mais simples. Veja um exemplo:
+
+```typescript
+interface IClient<T extends string | number> {
+  id: T
+  name: string
+}
+
+class Client<T extends string | number> implements IClient<T> {
+  constructor(
+    public name: string,
+    public id: T,
+  ) {}
+}
+
+const client1 = new Client('John Doe', 2);
+console.log(client1.id);
+// imprime 2
+
+const client2 = new Client('Jane Doe', 'Pd34mdj8');
+console.log(client2.id);
+// imprime 'Pd34mdj8'
+
+const client3 = new Client('Wrong Client', false);
+// gera o erro: Argument of type 'boolean' is not assignable to parameter of type 'string | number'
+```
+
+Para complementar nosso código, suponha que você queira que o valor padrão do tipo do atributo id seja number, pois caso um novo cliente inserido não possua id, você irá preencher esse atributo com um número aleatório. Após essa implementação, o código ficaria assim:
+
+```typescript
+interface IClient<T extends string | number> {
+  id: T
+  name: string
+}
+
+class Client<T extends string | number = number> implements IClient<T> {
+  name: string;
+  id: T;
+
+  constructor(
+    name: string,
+    id?: T,
+  ) {
+    this.name = name;
+    this.id = this.generateRandomId() as T;
+
+    if (id) {
+      this.id = id;
+    }
+  }
+
+  private generateRandomId(): number {
+    return Math.floor(Math.random() * 100000);
+  }
+}
+
+const client1 = new Client('John Doe', 2);
+console.log(client1.id);
+// imprime 2
+
+const client2 = new Client('Jane Doe', 'Pd34mdj8');
+console.log(client2.id);
+// imprime 'Pd34mdj8'
+
+const client3 = new Client('Luke Sky');
+console.log(client3.id);
+// imprime 38754
+```
+
+No código acima foi preciso adicionar, além do tipo padrão no genérico T, uma verificação no construtor para saber se o id foi passado no momento de instanciar a classe e, caso não, criar um id aleatório. Além disso, o *Type Alias* em `this.id = this.generateRandomId() as T` foi usado pois sem ele o *TypeScript* geraria um erro dizendo que o tipo number não é assinalável ao tipo `T`.
 
 # Vamos praticar!
 

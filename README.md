@@ -1,6 +1,6 @@
 # Aplicações na prática de tipos genéricos em TypeScript
 
-Esse conteúdo foi criado para a segunda etapa do processo seletivo de Summer Job de Currículo na [Trybe](https://www.betrybe.com/).
+Esse conteúdo foi criado para a segunda etapa do processo seletivo de Student Summer Job de Currículo na [Trybe](https://www.betrybe.com/).
 
 <br>
 
